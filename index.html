@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Mi Tienda</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #333; }
+        header { background-color: #003366; color: #fff; padding: 1rem; text-align: center; }
+        nav { margin: 1rem; text-align: center; }
+        nav a { color: white; margin: 0 1rem; text-decoration: none; }
+        .container { padding: 1rem; }
+        footer { background-color: #003366; color: #fff; padding: 1rem; text-align: center; position: fixed; bottom: 0; width: 100%; }
+    </style>
+    <script src="comun.js" defer></script>
+    <script src="https://mi-tienda-bucket.s3.amazonaws.com/scripts.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Mi Tienda</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="carrito-checkout.html">Carrito</a>
+            <a href="login.html">Iniciar Sesión</a>
+            <a href="registro.html">Registrarse</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Bienvenido a Mi Tienda</h2>
+        <p>¡Disfruta de nuestras ofertas y productos exclusivos!</p>
+    </div>
+    <script>
+        var callAPI = (email, password) => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+    
+            var raw = JSON.stringify({
+                "email": email,
+                "password": password
+            });
+    
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+    
+            fetch("https://dev.d2x8q3yak93wps.amplifyapp.com/", requestOptions)
+                .then(response => response.json())
+                .then(result => alert(result.body))
+                .catch(error => console.log('error', error));
+        };
+    </script>
+        
+    <footer>
+        <p>&copy; 2024 Mi Tienda</p>
+    </footer>
+</body>
+</html>

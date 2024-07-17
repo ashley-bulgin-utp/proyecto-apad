@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Mi Tienda</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f0f8ff; color: #333; }
+        header { background-color: #003366; color: #fff; padding: 1rem; text-align: center; }
+        nav { margin: 1rem; text-align: center; }
+        nav a { color: white; margin: 0 1rem; text-decoration: none; }
+        .container { padding: 1rem; }
+        .product-item { border: 1px solid #ccc; margin-bottom: 1rem; padding: 1rem; border-radius: 5px; background-color: #fff; }
+        footer { background-color: #003366; color: #fff; padding: 1rem; text-align: center; position: fixed; bottom: 0; width: 100%; }
+    </style>
+    <script src="comun.js" defer></script>
+    <script src="productos.js" defer></script>
+    <script src="https://mi-tienda-bucket.s3.amazonaws.com/scripts.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Mi Tienda</h1>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="productos.html">Productos</a>
+            <a href="carrito-checkout.html">Carrito</a>
+            <a href="login.html">Iniciar Sesión</a>
+            <a href="registro.html">Registrarse</a>
+        </nav>
+    </header>
+    <div class="container">
+        <h2>Productos Disponibles</h2>
+        <div id="product-list">
+            <!-- Productos disponibles -->
+        </div>
+    </div>
+    <script>
+        var callAPI = () => {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+    
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+    
+            fetch("https://dev.d2x8q3yak93wps.amplifyapp.com/", requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    const productosContainer = document.getElementById("productos");
+                    result.forEach(producto => {
+                        const productElement = document.createElement("div");
+                        productElement.innerHTML = `
+                            <h3>${producto.nombre}</h3>
+                            <img src="${producto.imagen}" alt="${producto.nombre}">
+                            <p>Precio: $${producto.precio}</p>
+                            <button onclick="agregarAlCarrito('${producto.id}')">Añadir al Carrito</button>
+                        `;
+                        productosContainer.appendChild(productElement);
+                    });
+                })
+                .catch(error => console.log('error', error));
+        };
+    
+        const agregarAlCarrito = (productoId) => {
+            console.log(`Producto ${productoId} añadido al carrito`);
+        };
+    
+        document.addEventListener("DOMContentLoaded", callAPI);
+    </script>
+    
+    <div id="productos"></div>
+    
+    <footer>
+        <p>&copy; 2024
